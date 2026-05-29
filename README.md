@@ -1,8 +1,12 @@
 # AWS 3-Tier Infrastructure using Terraform (IaC)
 
-## Project Overview
+## Overview
 
-This project demonstrates the deployment of a production-style AWS infrastructure using Terraform (Infrastructure as Code). The infrastructure follows a multi-tier architecture design with separate networking, security, compute, and load balancing layers. All resources are provisioned and managed through Terraform configuration files, enabling repeatable and automated deployments.
+This project demonstrates the provisioning of a production-style AWS infrastructure using Terraform (Infrastructure as Code). The infrastructure follows a multi-tier architecture pattern with separate networking, security, compute, and load balancing layers.
+
+The entire environment is provisioned through Terraform, enabling repeatable, automated, and version-controlled infrastructure deployments.
+
+---
 
 ## Architecture
 
@@ -21,12 +25,14 @@ Auto Scaling Group (ASG)
  ┌──┴──┐
  ▼     ▼
 EC2   EC2
-(App Servers)
+(Application Servers)
     │
     ▼
 Private Database Tier
 (Database Subnets Ready for RDS)
 ```
+
+---
 
 ## AWS Services Used
 
@@ -41,7 +47,7 @@ Private Database Tier
 * Private Application Subnets
 * Private Database Subnets
 
-### Security & IAM
+### Identity & Security
 
 * IAM Users
 * IAM Groups
@@ -54,7 +60,7 @@ Private Database Tier
 
 * EC2 Launch Template
 * Auto Scaling Group
-* User Data Scripts
+* User Data Automation
 
 ### Load Balancing
 
@@ -62,31 +68,24 @@ Private Database Tier
 * Target Group
 * Health Checks
 
-## Features
-
-* Infrastructure as Code (Terraform)
-* Multi-AZ Deployment
-* Public and Private Network Segmentation
-* Secure IAM Configuration
-* Auto Scaling for High Availability
-* Load Balanced Application Traffic
-* Layered Security Group Architecture
-* Automated Web Server Deployment
+---
 
 ## Security Architecture
 
 ### ALB Security Group
 
-* Allows HTTP (80)
-* Allows HTTPS (443)
+* HTTP (80) from Internet
+* HTTPS (443) from Internet
 
 ### Application Security Group
 
-* Allows traffic only from ALB Security Group
+* Accepts traffic only from ALB
 
 ### Database Security Group
 
-* Allows MySQL (3306) traffic only from Application Security Group
+* Accepts MySQL traffic only from Application Layer
+
+---
 
 ## IAM Implementation
 
@@ -96,53 +95,19 @@ Private Database Tier
 * Developers
 * Finance
 
-### Policies
+### Custom Policies
 
-* AdministratorAccess
-* PowerUserAccess
-* Billing Access
-* RDS Protection Policy
-* MFA Enforcement Policy
+* Require-MFA
+* RDS-Protection-Policy
 
-### Roles
+### EC2 Role Permissions
 
-* EC2 Role
-* S3 ReadOnly Access
-* CloudWatch Agent Access
+* AmazonS3ReadOnlyAccess
+* CloudWatchAgentServerPolicy
 
-## Deployment Steps
+---
 
-### Initialize Terraform
-
-```bash
-terraform init
-```
-
-### Validate Configuration
-
-```bash
-terraform validate
-```
-
-### Review Infrastructure Changes
-
-```bash
-terraform plan
-```
-
-### Deploy Infrastructure
-
-```bash
-terraform apply
-```
-
-### Destroy Infrastructure
-
-```bash
-terraform destroy
-```
-
-## Project Structure
+## Terraform Project Structure
 
 ```text
 .
@@ -154,34 +119,84 @@ terraform destroy
 ├── compute.tf
 ├── outputs.tf
 ├── terraform.tfvars
+├── .gitignore
 └── README.md
 ```
 
+---
+
+## Deployment
+
+Initialize Terraform:
+
+```bash
+terraform init
+```
+
+Validate Configuration:
+
+```bash
+terraform validate
+```
+
+Review Changes:
+
+```bash
+terraform plan
+```
+
+Deploy Infrastructure:
+
+```bash
+terraform apply
+```
+
+Destroy Infrastructure:
+
+```bash
+terraform destroy
+```
+
+---
+
+## Outputs
+
+The project provides useful Terraform outputs:
+
+* VPC ID
+* Internet Gateway ID
+* NAT Gateway ID
+* Application Load Balancer DNS Name
+
+---
+
 ## Skills Demonstrated
 
-* AWS Cloud Infrastructure
 * Terraform
 * Infrastructure as Code (IaC)
-* Networking Design
-* IAM & Security Best Practices
+* AWS Networking
+* IAM & Security
 * Auto Scaling
 * Load Balancing
-* Git & GitHub
 * Linux Administration
+* Git & GitHub
+
+---
 
 ## Future Enhancements
 
-* Amazon RDS Integration
+* Amazon RDS Deployment
 * CloudWatch Monitoring
 * SNS Notifications
-* Route53 Domain Integration
+* Route53 Integration
 * HTTPS using ACM Certificates
-* CI/CD Pipeline with GitHub Actions
-* Remote Terraform State using S3 and DynamoDB
+* Terraform Remote State (S3 + DynamoDB)
+* CI/CD using GitHub Actions
+
+---
 
 ## Author
 
 **Sahil Dighe**
 
 GitHub: https://github.com/sahil30dighe-web
-
